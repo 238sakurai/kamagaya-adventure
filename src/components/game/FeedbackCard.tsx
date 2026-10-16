@@ -12,7 +12,7 @@ import { Guide } from '../mascot/Guide'
 import { Button } from '../ui/Button'
 import { CategoryBadge } from '../ui/CategoryBadge'
 import { OfficialSiteButton } from '../ui/ExternalLink'
-import { MapLinkButtons } from '../ui/MapLinkButtons'
+import { StreetViewEmbed } from '../ui/StreetViewEmbed'
 import { Ruby } from '../ui/Ruby'
 
 interface FeedbackCardProps {
@@ -70,7 +70,7 @@ export function FeedbackCard({ result, combo, isLast, showNext, onNext, onOpenEn
         </div>
       </div>
       {photo && <EntryPhoto photo={photo} size="sm" className="mt-2" testId="feedback-photo" />}
-      {mapCoords && <MapLinkButtons coords={mapCoords} streetView={!!facility} className="mt-2" testIdPrefix="feedback-" />}
+      {mapCoords && <StreetViewEmbed coords={mapCoords} name={target.name} streetView={!!facility} className="mt-2" testIdPrefix="feedback-" />}
       <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
         {facility?.officialUrl && <OfficialSiteButton href={facility.officialUrl} data-testid="feedback-official-link" />}
         {onOpenEncyclopedia && (

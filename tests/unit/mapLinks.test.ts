@@ -3,7 +3,7 @@ import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { FACILITIES } from '../../src/data/facilities'
 import { project, unproject } from '../../src/lib/geo'
-import { districtLatLng, googleMapsUrl, streetViewUrl } from '../../src/lib/mapLinks'
+import { districtLatLng, googleMapsUrl, streetViewEmbedUrl, streetViewUrl } from '../../src/lib/mapLinks'
 import type { GeoData } from '../../src/types'
 
 const geo = JSON.parse(readFileSync(resolve(process.cwd(), 'public/data/geo/kamagaya.json'), 'utf8')) as GeoData
@@ -27,6 +27,19 @@ describe('mapLinks', () => {
     expect(url.searchParams.get('map_action')).toBe('pano')
     expect(url.searchParams.get('viewpoint')).toBe('35.776611,140.000778')
     expect(url.searchParams.has('key')).toBe(false)
+  })
+
+  it('埋め込み用の URL は Maps Embed API の streetview モードで、key と location=lat,lng を持つ', () => {
+    const url = new URL(streetViewEmbedUrl('dummy-key', CITY_HALL.latitude, CITY_HALL.longitude))
+    expect(url.origin + url.pathname).toBe('https://www.google.com/maps/embed/v1/streetview')
+    expect(url.searchParams.get('key')).toBe('dummy-key')
+    expect(url.searchParams.get('location')).toBe('35.776611,140.000778')
+  })
+
+  it('埋め込み用の URL のキーは URL エンコードされる', () => {
+    const url = new URL(streetViewEmbedUrl('a b&c=d', 35.7, 140))
+    expect(url.searchParams.get('key')).toBe('a b&c=d')
+    expect(url.searchParams.get('location')).toBe('35.700000,140.000000')
   })
 
   it('座標は小数 6 桁に丸められる（指数表記や長い小数にならない）', () => {

@@ -39,8 +39,12 @@ jobs:
 
       # base パスは GITHUB_REPOSITORY から自動判定（vite.config.ts を参照）。
       # ルート公開にしたいときは BASE_PATH: / を指定する。
+      # GOOGLE_MAPS_EMBED_KEY（Maps Embed API のキー、HTTP リファラー制限つき）は任意。
+      # Secret 未設定なら空文字になり、ストリートビューはリンクだけの表示になる。
       - name: Build
         run: npm run build
+        env:
+          VITE_GOOGLE_MAPS_EMBED_KEY: ${{ secrets.GOOGLE_MAPS_EMBED_KEY }}
 
       - uses: actions/configure-pages@v5
 
