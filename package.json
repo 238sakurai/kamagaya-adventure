@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "data:geo": "node scripts/prepare-geo-data/build-geo.mjs"
+    "data:geo": "node scripts/prepare-geo-data/build-geo.mjs",
+    "photos:optimize": "node scripts/optimize-photos.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -36,6 +37,7 @@
     "@vitejs/plugin-react": "^6.0.2",
     "jsdom": "^29.1.1",
     "oxlint": "^1.69.0",
+    "sharp": "^0.35.5",
     "topojson-client": "^3.1.0",
     "topojson-server": "^3.0.1",
     "topojson-simplify": "^3.0.3",

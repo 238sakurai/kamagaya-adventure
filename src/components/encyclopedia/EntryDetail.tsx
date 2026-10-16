@@ -8,6 +8,7 @@ import { KamagayaMap, type MapPin } from '../map/KamagayaMap'
 import { CATEGORY_INFO, CategoryBadge } from '../ui/CategoryBadge'
 import { ExternalLink, OfficialSiteButton } from '../ui/ExternalLink'
 import { Ruby } from '../ui/Ruby'
+import { EntryPhoto } from './EntryPhoto'
 
 interface EntryDetailProps {
   id: string
@@ -33,6 +34,7 @@ export function EntryDetail({ id, discovered }: EntryDetailProps) {
   const category = facility?.category ?? 'district'
   const info = CATEGORY_INFO[category]
   const firstPin = pins[0]
+  const photo = facility?.photo ?? district?.photo
 
   return (
     <div data-testid="entry-detail" data-id={id} data-discovered={discovered}>
@@ -61,6 +63,13 @@ export function EntryDetail({ id, discovered }: EntryDetailProps) {
             testId="entry-map"
             ariaLabel={`${name}の位置`}
           />
+        </div>
+      )}
+
+      {discovered && photo && (
+        <div className="mt-3">
+          <p className="mb-1 text-xs font-bold text-ink-soft">めじるし（写真）</p>
+          <EntryPhoto photo={photo} />
         </div>
       )}
 

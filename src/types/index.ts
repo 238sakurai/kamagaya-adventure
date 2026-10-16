@@ -7,6 +7,29 @@ export type FacilityCategory = 'elementary' | 'junior-high' | 'library' | 'child
 /** 図鑑のカテゴリ（施設 4 種 + 町名） */
 export type EntryCategory = FacilityCategory | 'district'
 
+/**
+ * 図鑑・クイズの解説に出す写真（実際に探検するときの目印）。
+ * ファイルは public/images/entries/ に置き、scripts/optimize-photos.mjs で WebP（幅 640px 以下・80KB 以下）にする。
+ * SVG のイラストでもよい。利用条件は docs/photos.md を参照。
+ */
+export interface EntryPhoto {
+  /** BASE_URL からの相対パス（例: images/entries/library-main.webp） */
+  src: string
+  /** 画像の説明（スクリーンリーダー用。何が写っているかを短く） */
+  alt: string
+  /** 実寸（レイアウトのずれを防ぐため、<img> の width / height に使う） */
+  width: number
+  height: number
+  /** 撮影者または提供元（画面に表示する） */
+  credit: string
+  /** 利用条件（例: 撮影者の許諾、CC BY 4.0）。画面に表示する */
+  license: string
+  /** 入手元 URL（他者の写真を使う場合） */
+  sourceUrl?: string
+  /** 撮影日（YYYY-MM-DD）。目印として古くなっていないかの目安 */
+  takenAt?: string
+}
+
 export interface Facility {
   id: string
   name: string
@@ -23,6 +46,8 @@ export interface Facility {
   town: string
   description?: string
   trivia?: string
+  /** 目印になる写真（任意） */
+  photo?: EntryPhoto
   sourceUrl: string
   verifiedAt: string
   /** 座標の出典 */
@@ -37,6 +62,8 @@ export interface District {
   chomeCount: number
   /** 子ども向けの一言（位置のヒントにもなる） */
   hint?: string
+  /** 目印になる写真（任意） */
+  photo?: EntryPhoto
 }
 
 /** 地図データ（scripts/prepare-geo-data で生成） */
