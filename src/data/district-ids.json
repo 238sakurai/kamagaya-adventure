@@ -1,0 +1,157 @@
+[
+  {
+    "id": "town-0010",
+    "name": "丸山",
+    "chomeCount": 3
+  },
+  {
+    "id": "town-0020",
+    "name": "鎌ケ谷",
+    "chomeCount": 9
+  },
+  {
+    "id": "town-0030",
+    "name": "東鎌ケ谷",
+    "chomeCount": 3
+  },
+  {
+    "id": "town-0040",
+    "name": "南鎌ケ谷",
+    "chomeCount": 4
+  },
+  {
+    "id": "town-0050",
+    "name": "道野辺",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0060",
+    "name": "東道野辺",
+    "chomeCount": 7
+  },
+  {
+    "id": "town-0070",
+    "name": "西道野辺",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0080",
+    "name": "馬込沢",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0091",
+    "name": "中沢新町",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0092",
+    "name": "中沢",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0100",
+    "name": "東中沢",
+    "chomeCount": 4
+  },
+  {
+    "id": "town-0110",
+    "name": "北中沢",
+    "chomeCount": 3
+  },
+  {
+    "id": "town-0120",
+    "name": "初富",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0130",
+    "name": "南初富",
+    "chomeCount": 6
+  },
+  {
+    "id": "town-0140",
+    "name": "右京塚",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0150",
+    "name": "中央",
+    "chomeCount": 2
+  },
+  {
+    "id": "town-0160",
+    "name": "富岡",
+    "chomeCount": 3
+  },
+  {
+    "id": "town-0170",
+    "name": "東初富",
+    "chomeCount": 6
+  },
+  {
+    "id": "town-0180",
+    "name": "くぬぎ山",
+    "chomeCount": 5
+  },
+  {
+    "id": "town-0190",
+    "name": "串崎新田",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0200",
+    "name": "粟野",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0210",
+    "name": "佐津間",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0220",
+    "name": "中佐津間",
+    "chomeCount": 2
+  },
+  {
+    "id": "town-0230",
+    "name": "西佐津間",
+    "chomeCount": 2
+  },
+  {
+    "id": "town-0240",
+    "name": "南佐津間",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0250",
+    "name": "軽井沢",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0260",
+    "name": "道野辺中央",
+    "chomeCount": 5
+  },
+  {
+    "id": "town-0270",
+    "name": "初富本町",
+    "chomeCount": 2
+  },
+  {
+    "id": "town-0280",
+    "name": "北初富",
+    "chomeCount": 0
+  },
+  {
+    "id": "town-0290",
+    "name": "道野辺本町",
+    "chomeCount": 2
+  },
+  {
+    "id": "town-0300",
+    "name": "新鎌ケ谷",
+    "chomeCount": 4
+  }
+]

@@ -1,0 +1,58 @@
+import type { ModeConfig, ModeId } from '../types'
+
+export const MODES: Record<ModeId, ModeConfig> = {
+  school: {
+    id: 'school',
+    label: 'がっこうはど〜こだ？',
+    kana: '',
+    title: 'がっこうはど〜こだ？',
+    description: '学校の名前をきいて、地図のピンをタップ！',
+    emoji: '🏫',
+    questionCount: 10,
+    attempts: 1,
+    hintAvailable: true,
+    timeLimit: null,
+    autoAdvanceMs: null,
+  },
+  district: {
+    id: 'district',
+    label: 'まちの名前をあてよう！',
+    kana: '',
+    title: 'まちの名前をあてよう！',
+    description: '光っている場所の町の名前を 4つの中からえらぼう',
+    emoji: '🏘️',
+    questionCount: 10,
+    attempts: 1,
+    hintAvailable: true,
+    timeLimit: null,
+    autoAdvanceMs: null,
+  },
+  facility: {
+    id: 'facility',
+    label: 'としょかん・児童センター探し',
+    kana: '',
+    title: 'としょかん・児童センター探し',
+    description: '図書館や児童センターの場所をタップしてさがそう',
+    emoji: '📚',
+    questionCount: 10,
+    attempts: 1,
+    hintAvailable: true,
+    timeLimit: null,
+    autoAdvanceMs: null,
+  },
+  challenge: {
+    id: 'challenge',
+    label: 'かまがやマスター！',
+    kana: '',
+    title: 'かまがやマスター！',
+    description: '60秒で何問とけるかな？ 学校・町・施設がまぜこぜで出るよ',
+    emoji: '⏱️',
+    questionCount: null,
+    attempts: 1,
+    hintAvailable: false,
+    timeLimit: 60,
+    autoAdvanceMs: 1100,
+  },
+}
+
+export const MODE_ORDER: ModeId[] = ['school', 'district', 'facility', 'challenge']

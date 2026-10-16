@@ -1,0 +1,194 @@
+@import 'tailwindcss';
+
+@theme {
+  --breakpoint-xs: 380px;
+  /* Web フォントは同梱しない（転送量・リクエスト数の削減）。iOS/macOS は丸ゴシックのヒラギノ丸ゴ、
+     Windows は BIZ UDPゴシック、Android は Noto Sans JP（システム標準）で表示する */
+  --font-sans:
+    'Hiragino Maru Gothic ProN', 'Hiragino Maru Gothic Pro', 'BIZ UDPGothic', 'Noto Sans JP',
+    'Hiragino Sans', 'Yu Gothic', system-ui, sans-serif;
+  --color-primary: #ffa726;
+  --color-primary-dark: #e08a0b;
+  --color-cream: #fff4d6;
+  --color-mint: #8dd9a5;
+  --color-mint-dark: #4fb473;
+  --color-sky: #b8e4ff;
+  --color-sky-dark: #5fb3e6;
+  --color-paper: #fffdf7;
+  --color-ink: #453830;
+  --color-ink-soft: #7d6b5f;
+  --color-correct: #58c78e;
+  --color-correct-dark: #2f9d66;
+  --color-wrong: #ffb56b;
+  --color-wrong-dark: #d9842f;
+  --color-line: #eadfd2;
+  --color-sun: #ffe066;
+  /* カテゴリ色（アイコン・文字と併用する） */
+  --color-cat-elementary: #4f8fe6;
+  --color-cat-junior: #9c6ade;
+  --color-cat-library: #3fae6a;
+  --color-cat-center: #ff8a3d;
+  --color-cat-district: #f2c230;
+  --shadow-pop: 0 4px 0 0 rgb(69 56 48 / 0.18);
+  --shadow-pop-sm: 0 3px 0 0 rgb(69 56 48 / 0.16);
+  --shadow-card: 0 8px 24px -8px rgb(69 56 48 / 0.25);
+  --font-weight-black: 700;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgb(184 228 255 / 0.55) 0, transparent 28%),
+    radial-gradient(circle at 88% 8%, rgb(255 244 214 / 0.9) 0, transparent 26%),
+    radial-gradient(circle at 80% 90%, rgb(141 217 165 / 0.4) 0, transparent 30%);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+ruby {
+  ruby-align: center;
+}
+
+rt {
+  font-size: 0.45em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-soft);
+}
+
+.safe-pad {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* 地図 */
+.map-svg {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.map-pin {
+  cursor: pointer;
+}
+
+.map-pin:focus {
+  outline: none;
+}
+
+.map-pin:focus-visible .pin-body {
+  stroke: var(--color-ink);
+  stroke-width: 3;
+}
+
+.map-district {
+  transition: fill 0.25s ease, opacity 0.25s ease;
+}
+
+.map-district:focus,
+.map-svg:focus {
+  outline: none;
+}
+
+.map-district:focus-visible {
+  stroke: var(--color-ink) !important;
+  stroke-width: 4 !important;
+}
+
+/* 出題中の区域だけ、短い点滅で注意を引く（3回で止まる） */
+@keyframes district-attn {
+  0%,
+  100% {
+    fill-opacity: 0.85;
+  }
+  50% {
+    fill-opacity: 0.45;
+  }
+}
+
+.map-district-target {
+  animation: district-attn 0.9s ease-in-out 3;
+}
+
+@keyframes pin-attn {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.pin-attn {
+  animation: pin-attn 0.6s ease-in-out 3;
+}
+
+.power-save .map-district-target,
+.power-save .pin-attn {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-district-target,
+  .pin-attn {
+    animation: none;
+  }
+}
+
+.text-halo {
+  paint-order: stroke fill;
+  stroke: #fffdf7;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.btn-pop {
+  box-shadow: var(--shadow-pop);
+  transform: translateY(0);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
+}
+
+.btn-pop:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 0 rgb(69 56 48 / 0.18);
+}
+
+.btn-pop:disabled {
+  filter: saturate(0.5);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.focus-ring:focus-visible {
+  outline: 4px solid rgb(69 56 48 / 0.5);
+  outline-offset: 3px;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+/* 未発見カードのグレー表示 */
+.card-undiscovered {
+  filter: grayscale(1);
+  opacity: 0.75;
+}
