@@ -5,6 +5,7 @@ import { FACILITY_BY_ID } from '../../data/facilities'
 import { LINES, pickLine } from '../../data/lines'
 import { entryInfo } from '../../lib/entries'
 import type { LastResult } from '../../types'
+import { EntryPhoto } from '../encyclopedia/EntryPhoto'
 import { Guide } from '../mascot/Guide'
 import { Button } from '../ui/Button'
 import { CategoryBadge } from '../ui/CategoryBadge'
@@ -25,6 +26,7 @@ export function FeedbackCard({ result, combo, isLast, showNext, onNext, onOpenEn
   const target = entryInfo(result.targetId)
   const facility = FACILITY_BY_ID.get(result.targetId)
   const district = DISTRICT_BY_ID.get(result.targetId)
+  const photo = facility?.photo ?? district?.photo
   const answered = result.answeredId !== result.targetId ? entryInfo(result.answeredId) : null
   const line = result.correct ? (combo >= 3 ? pickLine(LINES.combo, combo / 10) : pickLine(LINES.correct, result.points / 1000)) : pickLine(LINES.wrong, 0.1)
   return (
@@ -62,6 +64,7 @@ export function FeedbackCard({ result, combo, isLast, showNext, onNext, onOpenEn
           )}
         </div>
       </div>
+      {photo && <EntryPhoto photo={photo} size="sm" className="mt-2" testId="feedback-photo" />}
       <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
         {facility?.officialUrl && <OfficialSiteButton href={facility.officialUrl} data-testid="feedback-official-link" />}
         {onOpenEncyclopedia && (

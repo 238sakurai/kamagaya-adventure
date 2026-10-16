@@ -14,6 +14,8 @@ dist-ssr
 test-results
 playwright-report
 data/raw/
+# 変換前の写真（npm run photos:optimize の入力）
+data/photos/
 
 # Editor directories and files
 .vscode/*
