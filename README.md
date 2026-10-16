@@ -56,6 +56,15 @@ npm run data:geo   # data/source/*.geojson → public/data/geo/kamagaya.json
 `data/source/` に鎌ケ谷市分だけ抽出した元データを同梱しています（出典は `data/source/README.md`）。
 Web メルカトル投影 → viewBox 高さ 1000 に正規化 → TopoJSON で境界を共有したまま単純化 → 丁目を町名単位にマージ、という手順で約 138KB（gzip 44KB）の JSON にしています。
 
+## リンク共有用の画像
+
+```bash
+npm run og:image   # public/og-image.png（1200×630）を地図データから生成
+```
+
+SNS やチャットでリンクを共有したときに表示されるアイキャッチ画像です。文字はシステムフォント（ヒラギノ丸ゴ）で描くため macOS で生成します。
+公開 URL を変えたときは `index.html` の `og:url` / `og:image` も書き換えてください。
+
 ## 写真の追加
 
 ```bash

@@ -14,7 +14,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "data:geo": "node scripts/prepare-geo-data/build-geo.mjs",
-    "photos:optimize": "node scripts/optimize-photos.mjs"
+    "photos:optimize": "node scripts/optimize-photos.mjs",
+    "og:image": "node scripts/build-og-image.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
