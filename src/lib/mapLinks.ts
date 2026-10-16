@@ -2,9 +2,12 @@ import type { ProjectionMeta, Point } from '../types'
 import { unproject } from './geo'
 
 /**
- * Google マップ / ストリートビューへのリンク URL を組み立てる。
- * API キーや画像・スクリプトの読み込みは行わず、URL を新しいタブで開くだけ（省電力・規約の都合）。
- * URL の形式: https://developers.google.com/maps/documentation/urls/get-started
+ * Google マップ / ストリートビューの URL を組み立てる。
+ * リンク用の URL は API キー不要で、新しいタブで開くだけ（省電力・規約の都合）。
+ * 埋め込み用の URL（Maps Embed API）はキーが必要で、タップしたときだけ iframe で読み込む。
+ * URL の形式:
+ *  - リンク: https://developers.google.com/maps/documentation/urls/get-started
+ *  - 埋め込み: https://developers.google.com/maps/documentation/embed/embedding-map#streetview_mode
  */
 
 export interface LatLng {
@@ -25,6 +28,14 @@ export function googleMapsUrl(coords: LatLng): string {
 /** その地点に最も近いストリートビューを開く */
 export function streetViewUrl(coords: LatLng): string {
   return `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${query(coords)}`
+}
+
+/**
+ * Maps Embed API のストリートビュー（iframe の src）。
+ * キーは公開サイトに埋め込まれるので、Google Cloud 側で HTTP リファラー制限をかけること。
+ */
+export function streetViewEmbedUrl(key: string, latitude: number, longitude: number): string {
+  return `https://www.google.com/maps/embed/v1/streetview?key=${encodeURIComponent(key)}&location=${query({ latitude, longitude })}`
 }
 
 /** 町名は緯度経度を持たないので、地図データの centroid（viewBox 座標）を逆投影して使う */

@@ -8,7 +8,7 @@ import { districtLatLng, type LatLng } from '../../lib/mapLinks'
 import { KamagayaMap, type MapPin } from '../map/KamagayaMap'
 import { CATEGORY_INFO, CategoryBadge } from '../ui/CategoryBadge'
 import { ExternalLink, OfficialSiteButton } from '../ui/ExternalLink'
-import { MapLinkButtons } from '../ui/MapLinkButtons'
+import { StreetViewEmbed } from '../ui/StreetViewEmbed'
 import { Ruby } from '../ui/Ruby'
 import { EntryPhoto } from './EntryPhoto'
 
@@ -80,7 +80,7 @@ export function EntryDetail({ id, discovered }: EntryDetailProps) {
       {mapCoords && (
         <div className="mt-3">
           <p className="mb-1 text-xs font-bold text-ink-soft">たんけんの めじるし</p>
-          <MapLinkButtons coords={mapCoords} streetView={!!facility} />
+          <StreetViewEmbed coords={mapCoords} name={name} streetView={!!facility} />
         </div>
       )}
 

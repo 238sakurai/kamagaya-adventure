@@ -11,6 +11,10 @@ node_modules
 dist
 dist-ssr
 *.local
+# 環境変数（API キーなど）。.env.example だけコミットする
+.env
+.env.*
+!.env.example
 test-results
 playwright-report
 data/raw/
