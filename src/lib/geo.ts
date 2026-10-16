@@ -13,6 +13,17 @@ export function project(meta: ProjectionMeta, longitude: number, latitude: numbe
   ]
 }
 
+const toDeg = (rad: number) => (rad * 180) / Math.PI
+const inverseMercatorY = (y: number) => toDeg(2 * Math.atan(Math.exp(-y)) - Math.PI / 2)
+
+/** project の逆変換。viewBox 座標（町名の centroid など）を緯度経度に戻す */
+export function unproject(meta: ProjectionMeta, point: Point): { latitude: number; longitude: number } {
+  const [x, y] = point
+  const longitude = toDeg((x - meta.padding) / meta.scale + toRad(meta.offsetLon))
+  const latitude = inverseMercatorY((y - meta.padding) / meta.scale + meta.offsetMercY)
+  return { latitude, longitude }
+}
+
 // --- 当たり判定 -------------------------------------------------------------
 
 /** 閉じたリングに対する点の内外判定（レイキャスティング法） */
