@@ -5,8 +5,6 @@ import { CHARACTER } from '../config/character'
 import { DISTRICT_SOURCE } from '../data/districts'
 import { ENROLLMENT_SOURCE, SCHOOL_DISTRICT_URL } from '../data/schools'
 
-const REPO_URL = 'https://github.com/238sakurai/kamagaya-adventure'
-
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="rounded-3xl bg-white p-4 shadow-card">
     <h2 className="text-base font-black">{title}</h2>
@@ -28,9 +26,6 @@ export function AboutScreen({ onBack }: { onBack: () => void }) {
       <Section title="かまたんの かまがや大冒険！">
         <p>鎌ケ谷市の学校・町名・図書館・児童センターを、地図で遊びながら覚える学習ゲームです。</p>
         <p className="font-bold">このゲームは鎌ケ谷市の公式事業ではありません。個人が制作した非公式の地域学習ゲームです。</p>
-        <p>
-          ソースコード: <Link href={REPO_URL}>GitHub</Link>
-        </p>
       </Section>
       <Section title="地図データの出典">
         {geo?.sources.map((s) => (
