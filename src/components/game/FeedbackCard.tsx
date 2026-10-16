@@ -4,12 +4,15 @@ import { DISTRICT_BY_ID } from '../../data/districts'
 import { FACILITY_BY_ID } from '../../data/facilities'
 import { LINES, pickLine } from '../../data/lines'
 import { entryInfo } from '../../lib/entries'
+import { findDistrict } from '../../lib/geo'
+import { districtLatLng, type LatLng } from '../../lib/mapLinks'
 import type { LastResult } from '../../types'
 import { EntryPhoto } from '../encyclopedia/EntryPhoto'
 import { Guide } from '../mascot/Guide'
 import { Button } from '../ui/Button'
 import { CategoryBadge } from '../ui/CategoryBadge'
 import { OfficialSiteButton } from '../ui/ExternalLink'
+import { MapLinkButtons } from '../ui/MapLinkButtons'
 import { Ruby } from '../ui/Ruby'
 
 interface FeedbackCardProps {
@@ -22,11 +25,13 @@ interface FeedbackCardProps {
 }
 
 export function FeedbackCard({ result, combo, isLast, showNext, onNext, onOpenEncyclopedia }: FeedbackCardProps) {
-  const { effects } = useApp()
+  const { effects, geo } = useApp()
   const target = entryInfo(result.targetId)
   const facility = FACILITY_BY_ID.get(result.targetId)
   const district = DISTRICT_BY_ID.get(result.targetId)
   const photo = facility?.photo ?? district?.photo
+  const geoDistrict = geo && district ? findDistrict(geo, district.id) : undefined
+  const mapCoords: LatLng | null = facility ? { latitude: facility.latitude, longitude: facility.longitude } : geo && geoDistrict ? districtLatLng(geo.projection, geoDistrict.centroid) : null
   const answered = result.answeredId !== result.targetId ? entryInfo(result.answeredId) : null
   const line = result.correct ? (combo >= 3 ? pickLine(LINES.combo, combo / 10) : pickLine(LINES.correct, result.points / 1000)) : pickLine(LINES.wrong, 0.1)
   return (
@@ -65,6 +70,7 @@ export function FeedbackCard({ result, combo, isLast, showNext, onNext, onOpenEn
         </div>
       </div>
       {photo && <EntryPhoto photo={photo} size="sm" className="mt-2" testId="feedback-photo" />}
+      {mapCoords && <MapLinkButtons coords={mapCoords} streetView={!!facility} className="mt-2" testIdPrefix="feedback-" />}
       <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
         {facility?.officialUrl && <OfficialSiteButton href={facility.officialUrl} data-testid="feedback-official-link" />}
         {onOpenEncyclopedia && (

@@ -4,9 +4,11 @@ import { DISTRICT_BY_ID, DISTRICT_SOURCE } from '../../data/districts'
 import { FACILITY_BY_ID } from '../../data/facilities'
 import { findDistrict, project } from '../../lib/geo'
 import { describePosition } from '../../lib/hints'
+import { districtLatLng, type LatLng } from '../../lib/mapLinks'
 import { KamagayaMap, type MapPin } from '../map/KamagayaMap'
 import { CATEGORY_INFO, CategoryBadge } from '../ui/CategoryBadge'
 import { ExternalLink, OfficialSiteButton } from '../ui/ExternalLink'
+import { MapLinkButtons } from '../ui/MapLinkButtons'
 import { Ruby } from '../ui/Ruby'
 import { EntryPhoto } from './EntryPhoto'
 
@@ -35,6 +37,8 @@ export function EntryDetail({ id, discovered }: EntryDetailProps) {
   const info = CATEGORY_INFO[category]
   const firstPin = pins[0]
   const photo = facility?.photo ?? district?.photo
+  // 探検の目印: 施設はピンの座標、町名は区域の中心（centroid を逆投影）
+  const mapCoords: LatLng | null = facility ? { latitude: facility.latitude, longitude: facility.longitude } : geo && geoDistrict ? districtLatLng(geo.projection, geoDistrict.centroid) : null
 
   return (
     <div data-testid="entry-detail" data-id={id} data-discovered={discovered}>
@@ -70,6 +74,13 @@ export function EntryDetail({ id, discovered }: EntryDetailProps) {
         <div className="mt-3">
           <p className="mb-1 text-xs font-bold text-ink-soft">めじるし（写真）</p>
           <EntryPhoto photo={photo} />
+        </div>
+      )}
+
+      {mapCoords && (
+        <div className="mt-3">
+          <p className="mb-1 text-xs font-bold text-ink-soft">たんけんの めじるし</p>
+          <MapLinkButtons coords={mapCoords} streetView={!!facility} />
         </div>
       )}
 
