@@ -3,7 +3,7 @@ import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { FACILITIES } from '../../src/data/facilities'
 import { project, unproject } from '../../src/lib/geo'
-import { districtLatLng, googleMapsUrl, streetViewEmbedUrl, streetViewUrl } from '../../src/lib/mapLinks'
+import { districtLatLng, googleMapsUrl, streetViewEmbedUrl } from '../../src/lib/mapLinks'
 import type { GeoData } from '../../src/types'
 
 const geo = JSON.parse(readFileSync(resolve(process.cwd(), 'public/data/geo/kamagaya.json'), 'utf8')) as GeoData
@@ -17,15 +17,6 @@ describe('mapLinks', () => {
     expect(url.origin + url.pathname).toBe('https://www.google.com/maps/search/')
     expect(url.searchParams.get('api')).toBe('1')
     expect(url.searchParams.get('query')).toBe('35.776611,140.000778')
-    expect(url.searchParams.has('key')).toBe(false)
-  })
-
-  it('ストリートビューの URL は map_action=pano と viewpoint=lat,lng の形式', () => {
-    const url = new URL(streetViewUrl(CITY_HALL))
-    expect(url.origin + url.pathname).toBe('https://www.google.com/maps/@')
-    expect(url.searchParams.get('api')).toBe('1')
-    expect(url.searchParams.get('map_action')).toBe('pano')
-    expect(url.searchParams.get('viewpoint')).toBe('35.776611,140.000778')
     expect(url.searchParams.has('key')).toBe(false)
   })
 

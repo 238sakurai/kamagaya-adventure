@@ -98,8 +98,8 @@ base パスは `vite.config.ts` が `GITHUB_REPOSITORY` から自動で `/kamaga
 - 児童センター: 市公式サイトの各施設ページ。
 - すべて 2026-10-16 時点で HTTP 200 を確認。推測で生成した URL はありません。公式 URL のない項目（町名）はボタンを表示しません。
 - 外部リンクは `target="_blank" rel="noopener noreferrer"` で開き、ゲームの状態を保ちます。
-- 探検の目印として、図鑑の詳細とクイズの解説に Google マップ / ストリートビューへのリンクを置いています（`src/lib/mapLinks.ts`）。公式サイトや地図サービスの画像は転載せず、緯度経度だけで組み立てた URL を新しいタブで開きます。町名は地図データの重心（centroid）を逆投影した座標で、Google マップのみ。
-- ビルド時に `VITE_GOOGLE_MAPS_EMBED_KEY`（Google Maps Embed API のキー）があると、「ストリートビューを ここで見る」ボタンが先頭に加わり、タップしたときだけストリートビューを画面内の iframe に表示します（`src/components/ui/StreetViewEmbed.tsx`）。キーは公開 JS に含まれるので、Google Cloud で HTTP リファラーを公開 URL に制限してください（`.env.example`）。本番は GitHub Secrets の `GOOGLE_MAPS_EMBED_KEY` から渡します。キー未設定ならリンクだけになります。
+- 探検の目印として、図鑑の詳細とクイズの解説に Google マップへの小さなリンクボタンを置いています（`src/lib/mapLinks.ts`）。公式サイトや地図サービスの画像は転載せず、緯度経度だけで組み立てた URL を新しいタブで開きます。町名は地図データの重心（centroid）を逆投影した座標です。
+- ビルド時に `VITE_GOOGLE_MAPS_EMBED_KEY`（Google Maps Embed API のキー）があると、施設に「ストリートビューを ここで見る」ボタンが先頭に加わり、タップしたときだけストリートビューを画面内の iframe に表示します（`src/components/ui/StreetViewEmbed.tsx`）。キーは公開 JS に含まれるので、Google Cloud で HTTP リファラーを公開 URL に制限してください（`.env.example`）。本番は GitHub Secrets の `GOOGLE_MAPS_EMBED_KEY` から渡します。キー未設定なら Google マップのリンクだけで、ストリートビューは出ません。
 
 ### 通学区域
 
@@ -115,7 +115,7 @@ base パスは `vite.config.ts` が `GITHUB_REPOSITORY` から自動で `/kamaga
 - 氏名・住所・位置情報などの個人情報は収集しません。GPS・カメラ・マイク・センサーも使いません。
 - ハイスコア・図鑑・設定・「わたしの学校」の選択は端末の localStorage（キー `kamagaya-adventure:save`、`version: 1`）にのみ保存され、外部送信しません。
 - アクセス解析ツールは導入していません。設定画面からセーブデータを消去できます。
-- ストリートビューの埋め込み（キー設定時のみ）は「ここで見る」をタップしたときだけ Google に接続し、Google の規約・プライバシーポリシーが適用されます。タップするまで Google との通信は発生せず、キー未設定のビルドではリンクだけで埋め込みはありません。
+- ストリートビューの埋め込み（キー設定時のみ）は「ここで見る」をタップしたときだけ Google に接続し、Google の規約・プライバシーポリシーが適用されます。タップするまで Google との通信は発生せず、キー未設定のビルドでは Google マップのリンクだけで埋め込みはありません。
 
 ## 省電力設計
 
@@ -124,8 +124,8 @@ base パスは `vite.config.ts` が `GITHUB_REPOSITORY` から自動で `/kamaga
 - 画面遷移アニメーションなし（即応性優先）。ボタンの押し込みは CSS のみ。
 - Page Visibility API: タブ非表示中はチャレンジのタイマー（`setInterval`）を止め、非表示時間を計測から除外。復帰で再開。
 - 設定の「省電力モード」: `<html class="power-save">` と Motion の `reducedMotion="always"` で装飾アニメーションを停止、紙吹雪を簡易表示に。`prefers-reduced-motion` も同じ扱い。
-- 外部地図: Google マップ / ストリートビューは基本は外部リンク。埋め込み地図・画像・API スクリプトは読み込まないので、押さない限り通信も描画コストも発生しません。
-- ストリートビューの埋め込み（キー設定時のみ）: 初期表示はボタンだけで iframe は置きません。「ここで見る」をタップしたときだけ iframe を作って Google に接続し、「とじる」で DOM から外します。省電力モードでも同じ動作です。キー未設定時はリンクのみ。
+- 外部地図: Google マップは外部リンクのみ。埋め込み地図・画像・API スクリプトは読み込まないので、押さない限り通信も描画コストも発生しません。
+- ストリートビューの埋め込み（キー設定時のみ）: 初期表示はボタンだけで iframe は置きません。「ここで見る」をタップしたときだけ iframe を作って Google に接続し、「とじる」で DOM から外します。省電力モードでも同じ動作です。キー未設定時は Google マップのリンクのみ。
 - 通信: 地理データは 1 ファイル（gzip 約 44KB）を初回のみ取得。Web フォントは同梱せず端末の丸ゴシック（ヒラギノ丸ゴ / BIZ UDPゴシック / Noto Sans JP）を使用。音声ファイルなし（効果音は Web Audio で合成）。写真は 1 枚 80KB 以下の WebP で、表示するときだけ読み込む。
 
 ## パフォーマンス計測結果

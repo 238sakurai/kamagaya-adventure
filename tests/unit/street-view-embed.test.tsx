@@ -13,12 +13,12 @@ describe('StreetViewEmbed', () => {
     vi.unstubAllEnvs()
   })
 
-  it('キーなし: 埋め込みボタンも iframe もなく、リンクだけ出す', () => {
+  it('キーなし: 埋め込みボタンも iframe もなく、Google マップのリンクだけ出す', () => {
     render(<StreetViewEmbed coords={COORDS} name="鎌ケ谷市役所" apiKey="" />)
     expect(screen.queryByTestId('streetview-embed-button')).toBeNull()
     expect(iframe()).toBeNull()
     expect(screen.getByTestId('map-link')).toHaveAttribute('target', '_blank')
-    expect(screen.getByTestId('streetview-link')).toHaveAttribute('target', '_blank')
+    expect(screen.queryByTestId('streetview-link')).toBeNull()
   })
 
   it('キーは省略時に VITE_GOOGLE_MAPS_EMBED_KEY から読む', () => {
@@ -27,7 +27,7 @@ describe('StreetViewEmbed', () => {
     expect(screen.getByTestId('streetview-embed-button')).toBeInTheDocument()
   })
 
-  it('キーあり・タップ前: 先頭に埋め込みボタンと注記、リンクも残り、iframe はない', () => {
+  it('キーあり・タップ前: 先頭に埋め込みボタンと注記、Google マップのリンクも残り、iframe はない', () => {
     render(<StreetViewEmbed coords={COORDS} name="鎌ケ谷市役所" apiKey="dummy" />)
     const button = screen.getByRole('button', { name: 'ストリートビューを ここで見る' })
     expect(button).toHaveAttribute('aria-expanded', 'false')
@@ -37,7 +37,7 @@ describe('StreetViewEmbed', () => {
     const row = button.parentElement!
     expect(row.firstElementChild).toBe(button)
     expect(row.contains(screen.getByTestId('map-link'))).toBe(true)
-    expect(row.contains(screen.getByTestId('streetview-link'))).toBe(true)
+    expect(row.children).toHaveLength(2)
   })
 
   it('タップ後: 正しい src の iframe が 16:9 の枠に出て、「とじる」で外れる', () => {
@@ -65,7 +65,7 @@ describe('StreetViewEmbed', () => {
   it('町名（streetView=false）はキーがあっても埋め込みボタンを出さない', () => {
     render(<StreetViewEmbed coords={COORDS} name="丸山" streetView={false} apiKey="dummy" />)
     expect(screen.queryByTestId('streetview-embed-button')).toBeNull()
-    expect(screen.queryByTestId('streetview-link')).toBeNull()
+    expect(iframe()).toBeNull()
     expect(screen.getByTestId('map-link')).toBeInTheDocument()
   })
 

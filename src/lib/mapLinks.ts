@@ -3,8 +3,8 @@ import { unproject } from './geo'
 
 /**
  * Google マップ / ストリートビューの URL を組み立てる。
- * リンク用の URL は API キー不要で、新しいタブで開くだけ（省電力・規約の都合）。
- * 埋め込み用の URL（Maps Embed API）はキーが必要で、タップしたときだけ iframe で読み込む。
+ * 地図のリンク用 URL は API キー不要で、新しいタブで開くだけ（省電力・規約の都合）。
+ * ストリートビューの埋め込み用 URL（Maps Embed API）はキーが必要で、タップしたときだけ iframe で読み込む。
  * URL の形式:
  *  - リンク: https://developers.google.com/maps/documentation/urls/get-started
  *  - 埋め込み: https://developers.google.com/maps/documentation/embed/embedding-map#streetview_mode
@@ -23,11 +23,6 @@ const query = ({ latitude, longitude }: LatLng) => `${fmt(latitude)},${fmt(longi
 /** 地図上にピンを立てて開く */
 export function googleMapsUrl(coords: LatLng): string {
   return `https://www.google.com/maps/search/?api=1&query=${query(coords)}`
-}
-
-/** その地点に最も近いストリートビューを開く */
-export function streetViewUrl(coords: LatLng): string {
-  return `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${query(coords)}`
 }
 
 /**
