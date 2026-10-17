@@ -13,38 +13,39 @@ interface MapLinkButtonsProps {
   leading?: ReactNode
   /** ボタンの列と注記の間に置く要素（埋め込みの枠など） */
   children?: ReactNode
+  /** クイズの解説カードなど高さを抑えたい場所では注記を省く */
+  compact?: boolean
 }
 
-const BUTTON = 'btn-pop inline-flex min-h-12 items-center justify-center gap-2 rounded-3xl px-5 text-base font-bold text-ink no-underline'
+/** 小さなチップ型のリンク。解説カードや図鑑で地図を隠さないよう高さ 36px に抑える */
+export const MAP_CHIP = 'btn-pop focus-ring inline-flex min-h-9 items-center gap-1 rounded-full px-3 text-xs font-bold text-ink no-underline'
 
 /**
- * Google マップ / ストリートビューを新しいタブで開くボタン。
+ * Google マップ / ストリートビューを新しいタブで開くリンク。
  * 写真の代わりに探検の目印として使う。画像や API は読み込まず、リンクだけ。
  */
-export function MapLinkButtons({ coords, streetView = true, className = '', testIdPrefix = '', leading, children }: MapLinkButtonsProps) {
+export function MapLinkButtons({ coords, streetView = true, className = '', testIdPrefix = '', leading, children, compact = false }: MapLinkButtonsProps) {
   return (
     <div className={className} data-testid={`${testIdPrefix}map-links`}>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-1.5">
         {leading}
-        <ExternalLink href={googleMapsUrl(coords)} className={`${BUTTON} bg-mint`} data-testid={`${testIdPrefix}map-link`}>
+        <ExternalLink href={googleMapsUrl(coords)} className={`${MAP_CHIP} bg-mint`} data-testid={`${testIdPrefix}map-link`}>
           <span aria-hidden="true">🗺</span>
-          Google マップでみる
+          Google マップ
           <span aria-hidden="true">↗</span>
-          <span className="sr-only">（新しいタブで開きます）</span>
+          <span className="sr-only">でみる（新しいタブで開きます）</span>
         </ExternalLink>
         {streetView && (
-          <ExternalLink href={streetViewUrl(coords)} className={`${BUTTON} bg-sun`} data-testid={`${testIdPrefix}streetview-link`}>
+          <ExternalLink href={streetViewUrl(coords)} className={`${MAP_CHIP} bg-sun`} data-testid={`${testIdPrefix}streetview-link`}>
             <span aria-hidden="true">👀</span>
-            ストリートビューでみる
+            ストリートビュー
             <span aria-hidden="true">↗</span>
-            <span className="sr-only">（新しいタブで開きます）</span>
+            <span className="sr-only">でみる（新しいタブで開きます）</span>
           </ExternalLink>
         )}
       </div>
       {children}
-      <p className="mt-1 text-[11px] leading-relaxed text-ink-soft">
-        Google マップが あたらしいタブで ひらきます（このゲームとは べつの サービスです）
-      </p>
+      {!compact && <p className="mt-1 text-[10px] leading-snug text-ink-soft">Google の サービスが あたらしいタブで ひらきます</p>}
     </div>
   )
 }

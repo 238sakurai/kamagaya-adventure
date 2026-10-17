@@ -70,7 +70,7 @@ export function FeedbackCard({ result, combo, isLast, showNext, onNext, onOpenEn
         </div>
       </div>
       {photo && <EntryPhoto photo={photo} size="sm" className="mt-2" testId="feedback-photo" />}
-      {mapCoords && <StreetViewEmbed coords={mapCoords} name={target.name} streetView={!!facility} className="mt-2" testIdPrefix="feedback-" />}
+      {mapCoords && <StreetViewEmbed coords={mapCoords} name={target.name} streetView={!!facility} className="mt-2" testIdPrefix="feedback-" compact />}
       <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
         {facility?.officialUrl && <OfficialSiteButton href={facility.officialUrl} data-testid="feedback-official-link" />}
         {onOpenEncyclopedia && (
