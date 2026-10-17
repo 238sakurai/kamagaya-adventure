@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { streetViewEmbedUrl, type LatLng } from '../../lib/mapLinks'
-import { MapLinkButtons } from './MapLinkButtons'
+import { MAP_CHIP, MapLinkButtons } from './MapLinkButtons'
 
 interface StreetViewEmbedProps {
   coords: LatLng
@@ -13,9 +13,9 @@ interface StreetViewEmbedProps {
   testIdPrefix?: string
   /** Maps Embed API のキー。省略時はビルド時の VITE_GOOGLE_MAPS_EMBED_KEY（テスト用に差し替え可） */
   apiKey?: string
+  /** クイズの解説カードなど高さを抑えたい場所では注記を省く */
+  compact?: boolean
 }
-
-const BUTTON = 'btn-pop focus-ring inline-flex min-h-12 items-center justify-center gap-2 rounded-3xl px-5 text-base font-bold text-ink'
 
 /**
  * 探検の目印: Google マップ / ストリートビューのリンクに加えて、
@@ -23,13 +23,13 @@ const BUTTON = 'btn-pop focus-ring inline-flex min-h-12 items-center justify-cen
  * iframe はタップするまで置かず（通信も描画も発生しない）、「とじる」で外す。
  * キーが未設定のときは MapLinkButtons（リンクだけ）と同じ表示になる。
  */
-export function StreetViewEmbed({ coords, name, streetView = true, className = '', testIdPrefix = '', apiKey }: StreetViewEmbedProps) {
+export function StreetViewEmbed({ coords, name, streetView = true, className = '', testIdPrefix = '', apiKey, compact = false }: StreetViewEmbedProps) {
   const key = apiKey ?? import.meta.env.VITE_GOOGLE_MAPS_EMBED_KEY ?? ''
   const [open, setOpen] = useState(false)
   const canEmbed = streetView && key !== ''
 
   if (!canEmbed) {
-    return <MapLinkButtons coords={coords} streetView={streetView} className={className} testIdPrefix={testIdPrefix} />
+    return <MapLinkButtons coords={coords} streetView={streetView} className={className} testIdPrefix={testIdPrefix} compact={compact} />
   }
 
   return (
@@ -38,10 +38,18 @@ export function StreetViewEmbed({ coords, name, streetView = true, className = '
       streetView
       className={className}
       testIdPrefix={testIdPrefix}
+      compact={compact}
       leading={
-        <button type="button" className={`${BUTTON} bg-sky`} onClick={() => setOpen((v) => !v)} aria-expanded={open} data-testid={`${testIdPrefix}streetview-embed-button`}>
+        <button
+          type="button"
+          className={`${MAP_CHIP} bg-sky`}
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-label={open ? 'ストリートビューを とじる' : 'ストリートビューを ここで見る'}
+          data-testid={`${testIdPrefix}streetview-embed-button`}
+        >
           <span aria-hidden="true">{open ? '✕' : '👀'}</span>
-          {open ? 'ストリートビューを とじる' : 'ストリートビューを ここで見る'}
+          {open ? 'とじる' : 'ここで見る'}
         </button>
       }
     >
@@ -57,9 +65,11 @@ export function StreetViewEmbed({ coords, name, streetView = true, className = '
           />
         </div>
       ) : (
-        <p className="mt-1 text-[11px] leading-relaxed text-ink-soft" data-testid={`${testIdPrefix}streetview-embed-note`}>
-          「ここで見る」を タップすると Google に せつぞくするよ
-        </p>
+        !compact && (
+          <p className="mt-1 text-[10px] leading-snug text-ink-soft" data-testid={`${testIdPrefix}streetview-embed-note`}>
+            「ここで見る」を タップすると Google に せつぞくするよ
+          </p>
+        )
       )}
     </MapLinkButtons>
   )
